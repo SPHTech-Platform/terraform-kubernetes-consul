@@ -1,9 +1,10 @@
 resource "helm_release" "consul" {
-  name       = var.release_name
-  chart      = var.chart_name
-  repository = var.chart_repository
-  version    = var.chart_version
-  namespace  = var.chart_namespace
+  name             = var.release_name
+  chart            = var.chart_name
+  repository       = var.chart_repository
+  version          = var.chart_version
+  namespace        = var.chart_namespace
+  create_namespace = var.create_namespace
 
   max_history = var.max_history
   timeout     = var.chart_timeout

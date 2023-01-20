@@ -1,109 +1,137 @@
 variable "release_name" {
   description = "Helm release name for Consul"
+  type        = string
   default     = "consul"
 }
 
 variable "chart_name" {
   description = "Helm chart name to provision"
+  type        = string
   default     = "consul"
 }
 
 variable "chart_repository" {
   description = "Helm repository for the chart"
+  type        = string
   default     = "https://helm.releases.hashicorp.com"
 }
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
+  type        = string
   default     = "0.39.0"
 }
 
 variable "chart_namespace" {
-  description = "Namespace to install the chart into"
-  default     = "default"
+  description = "Namespace to install the chart into."
+  type        = string
+  default     = "consul"
+}
+
+variable "create_namespace" {
+  description = "Create the namespace if it does not yet exist."
+  type        = bool
+  default     = false
 }
 
 variable "chart_timeout" {
   description = "Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout"
+  type        = number
   default     = 1800
 }
 
 variable "name" {
   description = "Sets the prefix used for all resources in the helm chart. If not set, the prefix will be \"<helm release name>-consul\"."
+  type        = string
   default     = null
 }
 
 variable "fullname_override" {
   description = "Fullname Override of Helm resources"
+  type        = string
   default     = ""
 }
 
 variable "log_json_enable" {
   description = "Enable all component logs to be output in JSON format"
+  type        = bool
   default     = false
 }
 
 variable "max_history" {
   description = "Max History for Helm"
+  type        = number
   default     = 20
 }
 
 variable "consul_image_name" {
   description = "Docker Image of Consul to run"
+  type        = string
   default     = "consul"
 }
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
+  type        = string
   default     = "1.11.1"
 }
 
 variable "consul_k8s_image" {
   description = "Docker image of the consul-k8s binary to run"
+  type        = string
   default     = "hashicorp/consul-k8s-control-plane"
 }
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
+  type        = string
   default     = "0.36.0"
 }
 
 variable "image_envoy" {
   description = "Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways"
+  type        = string
   default     = "envoyproxy/envoy-alpine:v1.20.0"
 }
 
 variable "consul_domain" {
   description = "Top level Consul domain for DNS queries"
+  type        = string
   default     = "consul"
 }
 
 variable "pod_security_policy_enable" {
   description = "Create PodSecurityPolicy Resources"
+  type        = bool
   default     = true
 }
 
 variable "server_replicas" {
   description = "Number of server replicas to run"
+  type        = number
   default     = 5
 }
 
 variable "server_datacenter" {
   description = "Datacenter to configure Consul as."
+  type        = string
 }
 
 variable "server_storage" {
   description = "This defines the disk size for configuring the servers' StatefulSet storage. For dynamically provisioned storage classes, this is the desired size. For manually defined persistent volumes, this should be set to the disk size of the attached volume."
+  type        = string
   default     = "10Gi"
 }
 
 variable "server_storage_class" {
   description = "The StorageClass to use for the servers' StatefulSet storage. It must be able to be dynamically provisioned if you want the storage to be automatically created. For example, to use Local storage classes, the PersistentVolumeClaims would need to be manually created. An empty value will use the Kubernetes cluster's default StorageClass."
+  type        = string
   default     = ""
 }
 
 variable "server_resources" {
   description = "Resources for server"
+  type        = any
   default = {
     requests = {
       cpu    = "100m"
@@ -119,11 +147,13 @@ variable "server_resources" {
 
 variable "server_update_partition" {
   description = "This value is used to carefully control a rolling update of Consul server agents. This value specifies the partition (https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#partitions) for performing a rolling update. Please read the linked Kubernetes documentation and https://www.consul.io/docs/k8s/upgrade#upgrading-consul-servers for more information."
+  type        = number
   default     = 0
 }
 
 variable "server_security_context" {
   description = "Security context for server pods"
+  type        = map(string)
   default = {
     runAsNonRoot = true
     runAsGroup   = 1000
@@ -134,18 +164,20 @@ variable "server_security_context" {
 
 variable "server_extra_config" {
   description = "Additional configuration to include for servers in JSON/HCL"
+  type        = any
   default     = {}
 }
 
 variable "server_extra_volumes" {
   description = "List of map of extra volumes specification for server pods. See https://www.consul.io/docs/platform/k8s/helm.html#v-server-extravolumes for the keys"
+  type        = list(any)
   default     = []
 }
 
 variable "server_affinity" {
   description = "A YAML string that can be templated via helm specifying the affinity for server pods"
-
-  default = <<EOF
+  type        = string
+  default     = <<EOF
 podAntiAffinity:
   requiredDuringSchedulingIgnoredDuringExecution:
     - labelSelector:
@@ -160,6 +192,7 @@ EOF
 
 variable "server_tolerations" {
   description = "A YAML string that can be templated via helm specifying the tolerations for server pods"
+  type        = string
   default     = ""
 }
 
@@ -171,16 +204,19 @@ variable "server_topology_spread_constraints" {
 
 variable "client_affinity" {
   description = "affinity Settings for Client pods, formatted as a multi-line YAML string."
+  type        = string
   default     = null
 }
 
 variable "server_priority_class" {
   description = "Priority class for servers"
+  type        = string
   default     = ""
 }
 
 variable "server_annotations" {
   description = "A YAML string for server pods"
+  type        = string
   default     = ""
 }
 
@@ -192,16 +228,19 @@ variable "server_service_account_annotations" {
 
 variable "client_enabled" {
   description = "Enable running Consul client agents on every Kubernetes node"
+  type        = string
   default     = "-"
 }
 
 variable "client_grpc" {
   description = "Enable GRPC port for clients. Required for Connect Inject"
+  type        = bool
   default     = true
 }
 
 variable "client_resources" {
   description = "Resources for clients"
+  type        = any
   default = {
     requests = {
       cpu    = "100m"
@@ -217,11 +256,13 @@ variable "client_resources" {
 
 variable "client_extra_config" {
   description = "Additional configuration to include for client agents"
+  type        = any
   default     = {}
 }
 
 variable "client_security_context" {
   description = "Pod security context for client pods"
+  type        = map(string)
   default = {
     runAsNonRoot = true
     runAsGroup   = 1000
@@ -232,21 +273,25 @@ variable "client_security_context" {
 
 variable "client_extra_volumes" {
   description = "List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys"
+  type        = list(any)
   default     = []
 }
 
 variable "client_tolerations" {
   description = "A YAML string that can be templated via helm specifying the tolerations for client pods"
+  type        = string
   default     = ""
 }
 
 variable "client_annotations" {
   description = "A YAML string for client pods"
+  type        = string
   default     = ""
 }
 
 variable "client_labels" {
   description = "Additional labels for client pods"
+  type        = any
   default     = {}
 }
 
@@ -258,61 +303,73 @@ variable "client_service_account_annotations" {
 
 variable "client_priority_class" {
   description = "Priority class for clients"
+  type        = string
   default     = ""
 }
 
 variable "enable_sync_catalog" {
   description = "Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html"
+  type        = bool
   default     = true
 }
 
 variable "sync_by_default" {
   description = "If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default."
+  type        = bool
   default     = true
 }
 
 variable "sync_to_consul" {
   description = "If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync."
+  type        = bool
   default     = true
 }
 
 variable "sync_to_k8s" {
   description = " If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync."
+  type        = bool
   default     = true
 }
 
 variable "sync_k8s_prefix" {
   description = " A prefix to prepend to all services registered in Kubernetes from Consul. This defaults to '' where no prefix is prepended; Consul services are synced with the same name to Kubernetes. (Consul -> Kubernetes sync only)"
+  type        = string
   default     = ""
 }
 
 variable "sync_k8s_tag" {
   description = "An optional tag that is applied to all of the Kubernetes services that are synced into Consul. If nothing is set, this defaults to 'k8s'. (Kubernetes -> Consul sync only)"
+  type        = string
   default     = "k8s"
 }
 
 variable "sync_cluster_ip_services" {
   description = "If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services."
+  type        = bool
   default     = true
 }
 
 variable "sync_node_port_type" {
   description = "Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead."
+  type        = string
   default     = ""
 }
 
 variable "sync_add_k8s_namespace_suffix" {
   description = "Appends Kubernetes namespace suffix to each service name synced to Consul, separated by a dash."
+  type        = bool
   default     = true
 }
 
 variable "sync_affinity" {
-  description = "YAML template string for Sync Catalog affinity"
+  description = "YAML template string for Sync Catalog affinity."
+  type        = string
   default     = ""
 }
 
 variable "sync_resources" {
   description = "Sync Catalog resources"
+  type        = any
   default = {
     requests = {
       cpu    = "50m"
@@ -327,6 +384,7 @@ variable "sync_resources" {
 
 variable "sync_tolerations" {
   description = "Template string for Sync Catalog Tolerations"
+  type        = string
   default     = ""
 }
 
@@ -338,6 +396,7 @@ variable "sync_service_account_annotations" {
 
 variable "sync_priority_class" {
   description = "Priority Class Name for Consul Sync Catalog"
+  type        = string
   default     = ""
 }
 
@@ -355,36 +414,43 @@ variable "sync_acl_token" {
 
 variable "enable_ui" {
   description = "Enable Consul UI"
+  type        = bool
   default     = false
 }
 
 variable "ui_service_type" {
   description = "Type of service for Consul UI"
+  type        = string
   default     = "ClusterIP"
 }
 
 variable "ui_annotations" {
   description = "UI service annotations"
+  type        = string
   default     = ""
 }
 
 variable "ui_additional_spec" {
   description = "Additional Spec for the UI service"
+  type        = string
   default     = ""
 }
 
 variable "configure_kube_dns" {
   description = "Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS"
+  type        = bool
   default     = false
 }
 
 variable "configure_core_dns" {
   description = "Configure core-dns and OVERWRITE it to resolve .consul domains with Consul DNS"
+  type        = bool
   default     = false
 }
 
 variable "core_dns_template" {
   description = "Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example"
+  type        = string
 
   default = <<-EOF
     .:53 {
@@ -412,6 +478,7 @@ variable "core_dns_template" {
 
 variable "core_dns_labels" {
   description = "Labels for CoreDNS ConfigMap"
+  type        = any
   default = {
     "eks.amazonaws.com/component"     = "coredns"
     "k8s-app"                         = "kube-dns"
@@ -475,11 +542,13 @@ variable "replication_token" {
 ###########################
 variable "connect_enable" {
   description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
+  type        = bool
   default     = false
 }
 
 variable "enable_connect_inject" {
   description = "Enable Connect Injector process"
+  type        = bool
   default     = false
 }
 
@@ -491,11 +560,13 @@ variable "connect_inject_replicas" {
 
 variable "connect_inject_by_default" {
   description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
+  type        = bool
   default     = false
 }
 
 variable "connect_inject_namespace_selector" {
   description = "A YAML string selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
+  type        = string
   default     = <<-EOF
     matchExpressions:
       - key: "kubernetes.io/metadata.name"
@@ -506,26 +577,31 @@ variable "connect_inject_namespace_selector" {
 
 variable "connect_inject_allowed_namespaces" {
   description = "List of allowed namespaces to inject. "
+  type        = list(string)
   default     = ["*"]
 }
 
 variable "connect_inject_denied_namespaces" {
   description = "List of denied namespaces to inject. "
+  type        = list(string)
   default     = []
 }
 
 variable "connect_inject_affinity" {
   description = "Template string for Connect Inject Affinity"
+  type        = string
   default     = ""
 }
 
 variable "connect_inject_tolerations" {
   description = "Template string for Connect Inject Tolerations"
+  type        = string
   default     = ""
 }
 
 variable "connect_inject_resources" {
   description = "Resources for connect inject pod"
+  type        = map(any)
   default = {
     requests = {
       cpu    = "50m"
@@ -540,11 +616,13 @@ variable "connect_inject_resources" {
 
 variable "connect_inject_priority_class" {
   description = "Pod Priority Class for Connect Inject"
+  type        = string
   default     = ""
 }
 
 variable "connect_inject_log_level" {
   description = "Log verbosity level. One of debug, info, warn, or error."
+  type        = string
   default     = ""
 }
 
@@ -564,6 +642,7 @@ variable "connect_inject_failure_policy" {
 
 variable "connect_inject_sidecar_proxy_resources" {
   description = "Set default resources for sidecar proxy. If null, that resource won't be set."
+  type        = map(any)
   default = {
     requests = {
       cpu    = "100m"
@@ -578,6 +657,7 @@ variable "connect_inject_sidecar_proxy_resources" {
 
 variable "connect_inject_init_resources" {
   description = "Resource settings for the Connect injected init container."
+  type        = map(any)
   default = {
     requests = {
       cpu    = "50m"
@@ -597,6 +677,7 @@ variable "consul_sidecar_container_resources" {
     their local consul clients and is used by the ingress/terminating/mesh gateways
     as well as with every connect-injected service.
     EOF
+  type        = map(any)
   default = {
     requests = {
       cpu    = "20m"
@@ -611,6 +692,7 @@ variable "consul_sidecar_container_resources" {
 
 variable "envoy_extra_args" {
   description = "Pass arguments to the injected envoy sidecar. Valid arguments to pass to envoy can be found here: https://www.envoyproxy.io/docs/envoy/latest/operations/cli"
+  type        = string
   default     = null
 }
 
@@ -753,7 +835,7 @@ variable "terminating_gateway_defaults" {
     Note: You do not have to specify all of the fields to override them. If you omit them, they will
     fall back to the defaults for the Helm Chart.
   EOF
-
+  type        = any
   default = {
     # Number of replicas for each terminating gateway defined.
     replicas = 2
@@ -853,7 +935,7 @@ variable "terminating_gateways" {
       `terminating_gateway_defaults`. Values defined here override the defaults except in the
       case of annotations where both will be applied.
     EOF
-
+  type        = list(map(string))
   default = [
     {
       name = "terminating-gateway"
@@ -866,31 +948,37 @@ variable "terminating_gateways" {
 ###########################
 variable "gossip_encryption_key" {
   description = "32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable"
+  type        = string
   default     = null
 }
 
 variable "secret_name" {
   description = "Name of the secret for Consul"
+  type        = string
   default     = "consul"
 }
 
 variable "secret_annotation" {
   description = "Annotations for the Consul Secret"
+  type        = map(string)
   default     = {}
 }
 
 variable "tls_enabled" {
   description = "Enable TLS for the cluster"
+  type        = string
   default     = false
 }
 
 variable "tls_server_additional_dns_sans" {
   description = "List of additional DNS names to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access the Consul server(s) externally, for example, if you're using the UI."
+  type        = list(string)
   default     = []
 }
 
 variable "tls_server_additional_ip_sans" {
   description = "List of additional IP addresses to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access Consul server(s) externally, for example, if you're using the UI."
+  type        = list(string)
   default     = []
 }
 
@@ -903,17 +991,19 @@ Note: remember to switch it back to true once the rollout is complete.
 Please see this guide for more details:
 https://learn.hashicorp.com/consul/security-networking/certificates
 EOF
-
-  default = true
+  type        = bool
+  default     = true
 }
 
 variable "tls_https_only" {
   description = "If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections."
+  type        = bool
   default     = true
 }
 
 variable "tls_enable_auto_encrypt" {
   description = "Enable auto encrypt. Uses the connect CA to distribute certificates to clients"
+  type        = bool
   default     = false
 }
 
@@ -985,7 +1075,7 @@ variable "esm_tag" {
 
 variable "esm_resources" {
   description = "Resources for ESM"
-  type        = any
+  type        = map(any)
   default = {
     requests = {
       cpu = "200m"
@@ -1130,46 +1220,55 @@ variable "esm_server_port" {
 #################################
 variable "enable_exporter" {
   description = "Enable Consul Exporter deployment"
+  type        = bool
   default     = false
 }
 
 variable "exporter_release_name" {
   description = "Name of the Consul Exporter Chart Release"
+  type        = string
   default     = "consul-exporter"
 }
 
 variable "exporter_chart_name" {
   description = "Name of the Consul Exporter Chart name"
+  type        = string
   default     = "prometheus-consul-exporter"
 }
 
 variable "exporter_chart_repository" {
   description = "Consul Exporter Chart repository"
+  type        = string
   default     = "https://prometheus-community.github.io/helm-charts"
 }
 
 variable "exporter_chart_version" {
   description = "Consul Exporter Chart version"
+  type        = string
   default     = "0.4.0"
 }
 
 variable "exporter_replica" {
   description = "Number of Consul Exporter replicas"
+  type        = number
   default     = 1
 }
 
 variable "exporter_image" {
   description = "Docker image for Consul Exporter"
+  type        = string
   default     = "prom/consul-exporter"
 }
 
 variable "exporter_tag" {
   description = "Docker Image tag for Consul Exporter"
+  type        = string
   default     = "v0.7.1"
 }
 
 variable "exporter_resources" {
   description = "Resources for Consul Exporter"
+  type        = any
 
   default = {
     requests = {
@@ -1183,61 +1282,73 @@ variable "exporter_resources" {
 
 variable "exporter_affinity" {
   description = "Affinity for Consul Exporter"
+  type        = any
   default     = {}
 }
 
 variable "exporter_tolerations" {
   description = "Tolerations for Consul Exporter"
+  type        = list(string)
   default     = []
 }
 
 variable "exporter_service_annotations" {
   description = "Consul Exporter service's annotations"
+  type        = any
   default     = {}
 }
 
 variable "exporter_rbac_enabled" {
   description = "Create RBAC resources for Exporter"
+  type        = bool
   default     = true
 }
 
 variable "exporter_psp" {
   description = "Create PSP resources for Exporter"
+  type        = bool
   default     = true
 }
 
 variable "exporter_service_monitor" {
   description = "Create a ServiceMonitor to configure scraping"
+  type        = bool
   default     = false
 }
 
 variable "exporter_options" {
   description = "Arguments for Exporter. See https://github.com/prometheus/consul_exporter#flags"
+  type        = list(string)
   default     = {}
 }
 
 variable "exporter_env" {
   description = "Additional Environment Variables for Exporter"
+  type        = list(string)
   default     = []
 }
 
 variable "exporter_extra_volumes" {
   description = "Extra volumes for Exporter"
+  type        = list(string)
   default     = []
 }
 
 variable "exporter_extra_volume_mounts" {
   description = "Extra volume mounts for Exporter"
+  type        = list(string)
   default     = []
 }
 
 variable "exporter_init_containers" {
   description = "Extra Init Containers"
+  type        = list(string)
   default     = []
 }
 
 variable "exporter_extra_containers" {
   description = "Extra extra Containers"
+  type        = list(string)
   default     = []
 }
 
@@ -1252,36 +1363,43 @@ variable "exporter_pod_annotations" {
 ###########################
 variable "metrics_enabled" {
   description = "Configures the Helm chart’s components to expose Prometheus metrics for the Consul service mesh."
+  type        = bool
   default     = false
 }
 
 variable "enable_agent_metrics" {
   description = "Configures consul agent metrics."
+  type        = bool
   default     = false
 }
 
 variable "agent_metrics_retention_time" {
   description = "Configures the retention time for metrics in Consul clients and servers. This must be greater than 0 for Consul clients and servers to expose any metrics at all."
+  type        = string
   default     = "1m"
 }
 
 variable "enable_gateway_metrics" {
   description = "If true, mesh, terminating, and ingress gateways will expose their Envoy metrics on port `20200` at the `/metrics` path and all gateway pods will have Prometheus scrape annotations."
+  type        = bool
   default     = true
 }
 
 variable "ui_metrics_enabled" {
   description = "Enable displaying metrics in UI. Defaults to value of var.metrics_enabled"
+  type        = string
   default     = "-"
 }
 
 variable "ui_metrics_provider" {
   description = "Provider for metrics. See https://www.consul.io/docs/agent/options#ui_config_metrics_provider"
+  type        = string
   default     = "prometheus"
 }
 
 variable "ui_metrics_base_url" {
   description = "URL of the prometheus server, usually the service URL."
+  type        = string
   default     = "http://prometheus-server"
 }
 
@@ -1299,17 +1417,19 @@ variable "connect_inject_metrics_default_enabled" {
         the listener will just expose Envoy sidecar metrics.
     Defaults to var.metrics_enabled
     EOF
-
-  default = "-"
+  type        = string
+  default     = "-"
 }
 
 variable "connect_inject_default_enable_merging" {
   description = "Configures the Consul sidecar to run a merged metrics server to combine and serve both Envoy and Connect service metrics. This feature is available only in Consul v1.10-alpha or greater."
+  type        = bool
   default     = false
 }
 
 variable "connect_inject_default_merged_metrics_port" {
   description = "Configures the port at which the Consul sidecar will listen on to return combined metrics. This port only needs to be changed if it conflicts with the application's ports."
+  type        = number
   default     = 20100
 }
 
@@ -1322,6 +1442,7 @@ variable "connect_inject_default_prometheus_scrape_port" {
     That can be configured with the
     `consul.hashicorp.com/service-metrics-port` annotation.
     EOF
+  type        = number
   default     = 20200
 }
 
@@ -1334,6 +1455,7 @@ variable "connect_inject_default_prometheus_scrape_path" {
     That can be configured with the
     `consul.hashicorp.com/service-metrics-path` annotation.
     EOF
+  type        = string
   default     = "/metrics"
 }
 
