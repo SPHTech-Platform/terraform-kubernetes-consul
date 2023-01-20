@@ -1318,7 +1318,7 @@ variable "exporter_service_monitor" {
 
 variable "exporter_options" {
   description = "Arguments for Exporter. See https://github.com/prometheus/consul_exporter#flags"
-  type        = list(string)
+  type        = any
   default     = {}
 }
 
