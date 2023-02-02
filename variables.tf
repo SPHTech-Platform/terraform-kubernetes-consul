@@ -67,13 +67,13 @@ variable "max_history" {
 variable "consul_image_name" {
   description = "Docker Image of Consul to run"
   type        = string
-  default     = "consul"
+  default     = "hashicorp/consul"
 }
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
   type        = string
-  default     = "1.11.1"
+  default     = "1.14.2"
 }
 
 variable "consul_k8s_image" {
@@ -85,7 +85,7 @@ variable "consul_k8s_image" {
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
   type        = string
-  default     = "0.36.0"
+  default     = "1.0.2"
 }
 
 variable "image_envoy" {
@@ -115,6 +115,7 @@ variable "server_replicas" {
 variable "server_datacenter" {
   description = "Datacenter to configure Consul as."
   type        = string
+  default     = "dc1"
 }
 
 variable "server_storage" {
