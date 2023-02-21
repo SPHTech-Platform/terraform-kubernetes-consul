@@ -7,7 +7,7 @@ global:
   # this default via its component-specific "enabled" config. If false, no components
   # will be installed by default and per-component opt-in is required, such as by
   # setting `server.enabled` to true.
-  enabled: true
+  enabled: ${global_enabled}
 
   # The default log level to apply to all components which do not otherwise override this setting.
   # It is recommended to generally not set this below "info" unless actively debugging due to logging verbosity.
@@ -1113,7 +1113,7 @@ server:
 externalServers:
   # If true, the Helm chart will be configured to talk to the external servers.
   # If setting this to true, you must also set `server.enabled` to false.
-  enabled: false
+  enabled: ${external_servers_enabled}
 
   # An array of external Consul server hosts that are used to make
   # HTTPS connections from the components in this Helm chart.
@@ -1185,7 +1185,7 @@ client:
   # join that cluster. If `server.enabled` is not true, then a value must be
   # specified so the clients can join a valid cluster.
   # @type: array<string>
-  join: null
+  join: ${client_join}
 
   # An absolute path to a directory on the host machine to use as the Consul
   # client data directory. If set to the empty string or null, the Consul agent
@@ -2323,7 +2323,7 @@ meshGateway:
   # gateways and Consul Connect will be configured to use gateways.
   # This setting is required for [Cluster Peering](https://developer.hashicorp.com/consul/docs/connect/cluster-peering/k8s).
   # Requirements: consul 1.6.0+ if using `global.acls.manageSystemACLs``.
-  enabled: false
+  enabled: ${mesh_gateway_enable}
 
   # Number of replicas for the Deployment.
   replicas: 2

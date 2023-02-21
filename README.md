@@ -142,6 +142,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | <a name="input_client_extra_config"></a> [client\_extra\_config](#input\_client\_extra\_config) | Additional configuration to include for client agents | `any` | `{}` | no |
 | <a name="input_client_extra_volumes"></a> [client\_extra\_volumes](#input\_client\_extra\_volumes) | List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys | `list(any)` | `[]` | no |
 | <a name="input_client_grpc"></a> [client\_grpc](#input\_client\_grpc) | Enable GRPC port for clients. Required for Connect Inject | `bool` | `true` | no |
+| <a name="input_client_join"></a> [client\_join](#input\_client\_join) | Cluster addresses for clients to join | `list(string)` | `null` | no |
 | <a name="input_client_labels"></a> [client\_labels](#input\_client\_labels) | Additional labels for client pods | `any` | `{}` | no |
 | <a name="input_client_priority_class"></a> [client\_priority\_class](#input\_client\_priority\_class) | Priority class for clients | `string` | `""` | no |
 | <a name="input_client_resources"></a> [client\_resources](#input\_client\_resources) | Resources for clients | `any` | <pre>{<br>  "limits": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  },<br>  "requests": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  }<br>}</pre> | no |
@@ -253,12 +254,15 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | <a name="input_exporter_service_monitor"></a> [exporter\_service\_monitor](#input\_exporter\_service\_monitor) | Create a ServiceMonitor to configure scraping | `bool` | `false` | no |
 | <a name="input_exporter_tag"></a> [exporter\_tag](#input\_exporter\_tag) | Docker Image tag for Consul Exporter | `string` | `"v0.7.1"` | no |
 | <a name="input_exporter_tolerations"></a> [exporter\_tolerations](#input\_exporter\_tolerations) | Tolerations for Consul Exporter | `list(string)` | `[]` | no |
+| <a name="input_external_servers_enabled"></a> [external\_servers\_enabled](#input\_external\_servers\_enabled) | Talk to external servers, If setting this to true, you must also set `server.enabled` to false. | `bool` | `false` | no |
 | <a name="input_fullname_override"></a> [fullname\_override](#input\_fullname\_override) | Fullname Override of Helm resources | `string` | `""` | no |
+| <a name="input_global_enabled"></a> [global\_enabled](#input\_global\_enabled) | Deploy consul services | `bool` | `true` | no |
 | <a name="input_gossip_encryption_key"></a> [gossip\_encryption\_key](#input\_gossip\_encryption\_key) | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `string` | `null` | no |
 | <a name="input_image_envoy"></a> [image\_envoy](#input\_image\_envoy) | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.20.0"` | no |
 | <a name="input_log_json_enable"></a> [log\_json\_enable](#input\_log\_json\_enable) | Enable all component logs to be output in JSON format | `bool` | `false` | no |
 | <a name="input_manage_system_acls"></a> [manage\_system\_acls](#input\_manage\_system\_acls) | Manager ACL Tokens for Consul and consul-k8s components | `bool` | `false` | no |
 | <a name="input_max_history"></a> [max\_history](#input\_max\_history) | Max History for Helm | `number` | `20` | no |
+| <a name="input_mesh_gateway_enable"></a> [mesh\_gateway\_enable](#input\_mesh\_gateway\_enable) | Deploy Mesh Gateways | `bool` | `false` | no |
 | <a name="input_metrics_enabled"></a> [metrics\_enabled](#input\_metrics\_enabled) | Configures the Helm chart’s components to expose Prometheus metrics for the Consul service mesh. | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | Sets the prefix used for all resources in the helm chart. If not set, the prefix will be "<helm release name>-consul". | `string` | `null` | no |
 | <a name="input_pod_security_policy_enable"></a> [pod\_security\_policy\_enable](#input\_pod\_security\_policy\_enable) | Create PodSecurityPolicy Resources | `bool` | `true` | no |

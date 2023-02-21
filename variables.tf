@@ -40,6 +40,12 @@ variable "chart_timeout" {
   default     = 1800
 }
 
+variable "global_enabled" {
+  description = "Deploy consul services"
+  type        = bool
+  default     = true
+}
+
 variable "name" {
   description = "Sets the prefix used for all resources in the helm chart. If not set, the prefix will be \"<helm release name>-consul\"."
   type        = string
@@ -203,12 +209,6 @@ variable "server_topology_spread_constraints" {
   default     = ""
 }
 
-variable "client_affinity" {
-  description = "affinity Settings for Client pods, formatted as a multi-line YAML string."
-  type        = string
-  default     = null
-}
-
 variable "server_priority_class" {
   description = "Priority class for servers"
   type        = string
@@ -227,10 +227,22 @@ variable "server_service_account_annotations" {
   default     = ""
 }
 
+variable "external_servers_enabled" {
+  description = "Talk to external servers, If setting this to true, you must also set `server.enabled` to false."
+  type        = bool
+  default     = false
+}
+
 variable "client_enabled" {
   description = "Enable running Consul client agents on every Kubernetes node"
   type        = string
   default     = "-"
+}
+
+variable "client_join" {
+  description = "Cluster addresses for clients to join"
+  type        = list(string)
+  default     = null
 }
 
 variable "client_grpc" {
@@ -276,6 +288,12 @@ variable "client_extra_volumes" {
   description = "List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys"
   type        = list(any)
   default     = []
+}
+
+variable "client_affinity" {
+  description = "affinity Settings for Client pods, formatted as a multi-line YAML string."
+  type        = string
+  default     = null
 }
 
 variable "client_tolerations" {
@@ -818,9 +836,19 @@ variable "controller_acl_token" {
   }
 }
 
-###########################
+##############################
+# Consul Connect Mesh Gateway
+##############################
+variable "mesh_gateway_enable" {
+  description = "Deploy Mesh Gateways"
+  type        = bool
+  default     = false
+}
+
+
+#####################################
 # Consul Connect Terminating Gateway
-###########################
+#####################################
 variable "terminating_gateway_enable" {
   description = "Deploy Terminating Gateways"
   type        = bool
