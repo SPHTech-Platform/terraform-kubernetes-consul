@@ -380,7 +380,7 @@ global:
   # the `default` Consul namespace. Additional configuration
   # options are found in the `consulNamespaces` section of both the catalog sync
   # and connect injector.
-  enableConsulNamespaces: false
+  enableConsulNamespaces: ${enable_consul_namespaces}
 
   # Configure ACLs.
   acls:
@@ -647,7 +647,7 @@ server:
   # within Kubernetes to join that cluster, this should probably be false.
   # @default: global.enabled
   # @type: boolean
-  enabled: "-"
+  enabled: ${server_enabled}
 
   # The name of the Docker image (including any tag) for the containers running
   # Consul server agents.
@@ -1125,10 +1125,10 @@ externalServers:
   # should be the same, however, they may be different if you
   # wish to use separate hosts for the HTTPS connections.
   # @type: array<string>
-  hosts: [ ]
+  hosts: ${external_servers_hosts}
 
   # The HTTPS port of the Consul servers.
-  httpsPort: 8501
+  httpsPort: ${external_servers_https_port}
 
   # The GRPC port of the Consul servers.
   grpcPort: 8502
@@ -1144,7 +1144,7 @@ externalServers:
   # making HTTPS calls to Consul servers.
   # **NOTE:** This does not affect Consul's internal RPC communication which will
   # always use `global.tls.caCert`.
-  useSystemRoots: false
+  useSystemRoots: ${external_servers_use_system_roots}
 
   # If you are setting `global.acls.manageSystemACLs` and
   # `connectInject.enabled` to true, set `k8sAuthMethodHost` to the address of the Kubernetes API server.
@@ -1159,7 +1159,7 @@ externalServers:
   # ```
   #
   # @type: string
-  k8sAuthMethodHost: null
+  k8sAuthMethodHost: ${external_servers_k8s_authmethod_host}
 
   # If true, setting this prevents the consul-dataplane and consul-k8s components from watching the Consul servers for changes. This is
   # useful for situations where Consul servers are behind a load balancer.
@@ -2323,10 +2323,10 @@ meshGateway:
   # gateways and Consul Connect will be configured to use gateways.
   # This setting is required for [Cluster Peering](https://developer.hashicorp.com/consul/docs/connect/cluster-peering/k8s).
   # Requirements: consul 1.6.0+ if using `global.acls.manageSystemACLs``.
-  enabled: ${mesh_gateway_enable}
+  enabled: ${mesh_gateway_enabled}
 
   # Number of replicas for the Deployment.
-  replicas: 2
+  replicas: ${mesh_gateway_replicas}
 
   # What gets registered as WAN address for the gateway.
   wanAddress:
@@ -2546,7 +2546,7 @@ meshGateway:
 ingressGateways:
   # Enable ingress gateway deployment. Requires `connectInject.enabled=true`
   # and `client.enabled=true`.
-  enabled: false
+  enabled: ${ingress_gateway_enabled}
 
   # Defaults sets default values for all gateway fields. With the exception
   # of annotations, defining any of these values in the `gateways` list
@@ -2555,7 +2555,7 @@ ingressGateways:
   # for a specific gateway.
   defaults:
     # Number of replicas for each ingress gateway defined.
-    replicas: 2
+    replicas: ${ingress_gateway_replicas}
 
     # The service options configure the Service that fronts the gateway Deployment.
     service:
@@ -2720,7 +2720,7 @@ ingressGateways:
 terminatingGateways:
   # Enable terminating gateway deployment. Requires `connectInject.enabled=true`
   # and `client.enabled=true`.
-  enabled: ${terminating_gateway_enable}
+  enabled: ${terminating_gateway_enabled}
 
   # Defaults sets default values for all gateway fields. With the exception
   # of annotations, defining any of these values in the `gateways` list
