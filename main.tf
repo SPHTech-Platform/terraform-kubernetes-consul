@@ -67,10 +67,11 @@ locals {
       secretKey  = var.replication_token.secret_key
     })
 
-    external_servers_enabled          = var.external_servers_enabled
-    external_servers_hosts            = var.external_servers_hosts
-    external_servers_https_port       = var.external_servers_https_port
-    external_servers_use_system_roots = var.external_servers_use_system_roots
+    external_servers_enabled             = var.external_servers_enabled
+    external_servers_hosts               = jsonencode(var.external_servers_hosts)
+    external_servers_https_port          = var.external_servers_https_port
+    external_servers_use_system_roots    = var.external_servers_use_system_roots
+    external_servers_k8s_authmethod_host = var.external_servers_k8s_authmethod_host
 
     client_enabled        = jsonencode(var.client_enabled)
     client_grpc           = var.client_grpc
