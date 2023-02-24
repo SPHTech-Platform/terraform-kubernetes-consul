@@ -895,6 +895,19 @@ variable "ingress_gateway_replicas" {
   default     = 2
 }
 
+variable "ingress_gateways" {
+  description = <<-EOF
+      Gateways is a list of gateway objects. 
+      The only required field for each is name, though they can also contain any of the fields in defaults.
+      Values defined here override the defaults except in the case of annotations where both will be applied.
+    EOF
+  type        = list(map(string))
+  default = [
+    {
+      name = "ingress-gateway"
+    }
+  ]
+}
 
 #####################################
 # Consul Connect Terminating Gateway

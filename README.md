@@ -266,6 +266,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | <a name="input_image_envoy"></a> [image\_envoy](#input\_image\_envoy) | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.20.0"` | no |
 | <a name="input_ingress_gateway_enabled"></a> [ingress\_gateway\_enabled](#input\_ingress\_gateway\_enabled) | Deploy Ingress Gateways | `bool` | `false` | no |
 | <a name="input_ingress_gateway_replicas"></a> [ingress\_gateway\_replicas](#input\_ingress\_gateway\_replicas) | Number of replicas for each ingress gateway defined. | `string` | `2` | no |
+| <a name="input_ingress_gateways"></a> [ingress\_gateways](#input\_ingress\_gateways) | Gateways is a list of gateway objects. <br>The only required field for each is name, though they can also contain any of the fields in defaults.<br>Values defined here override the defaults except in the case of annotations where both will be applied. | `list(map(string))` | <pre>[<br>  {<br>    "name": "ingress-gateway"<br>  }<br>]</pre> | no |
 | <a name="input_log_json_enable"></a> [log\_json\_enable](#input\_log\_json\_enable) | Enable all component logs to be output in JSON format | `bool` | `false` | no |
 | <a name="input_manage_system_acls"></a> [manage\_system\_acls](#input\_manage\_system\_acls) | Manager ACL Tokens for Consul and consul-k8s components | `bool` | `false` | no |
 | <a name="input_max_history"></a> [max\_history](#input\_max\_history) | Max History for Helm | `number` | `20` | no |

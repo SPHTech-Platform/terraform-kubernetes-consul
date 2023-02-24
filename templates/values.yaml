@@ -2708,7 +2708,7 @@ ingressGateways:
   # case of annotations where both will be applied.
   # @type: array<map>
   gateways:
-  - name: ingress-gateway
+    ${indent(4, ingress_gateways)}
 
 # Configuration options for terminating gateways. Default values for all
 # terminating gateways are defined in `terminatingGateways.defaults`. Any of

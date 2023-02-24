@@ -181,6 +181,7 @@ locals {
 
     ingress_gateway_enabled  = var.ingress_gateway_enabled
     ingress_gateway_replicas = var.ingress_gateway_replicas
+    ingress_gateways         = yamlencode(var.ingress_gateways)
 
     terminating_gateway_enabled  = var.terminating_gateway_enabled
     terminating_gateway_defaults = yamlencode(var.terminating_gateway_defaults)
