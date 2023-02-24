@@ -74,6 +74,7 @@ locals {
     external_servers_k8s_authmethod_host = var.external_servers_k8s_authmethod_host
 
     client_enabled        = jsonencode(var.client_enabled)
+    client_join           = jsonencode(var.client_join)
     client_grpc           = var.client_grpc
     client_resources      = yamlencode(var.client_resources)
     client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
