@@ -81,7 +81,7 @@ config:
   # Kubernetes secret containing the ACL token to use when communicating with the local Consul agent. Can
   # also be provided through the CONSUL_HTTP_TOKEN environment variable.
   token:
-    ${indent(6, token)}
+    ${indent(4, token)}
 
   #The Consul datacenter to use.
   datacenter: "${datacenter}"
