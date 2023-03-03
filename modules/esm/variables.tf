@@ -70,7 +70,7 @@ variable "esm_chart_repository" {
 variable "esm_chart_version" {
   description = "ESM Chart version"
   type        = string
-  default     = "0.2.1"
+  default     = "0.2.2"
 }
 
 variable "esm_replica" {
@@ -223,7 +223,7 @@ variable "esm_init_container_set_sysctl" {
 variable "esm_use_node_agent" {
   description = "Use Consul agent Daemonset"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "esm_node_agent_port" {
