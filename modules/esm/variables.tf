@@ -70,7 +70,7 @@ variable "esm_chart_repository" {
 variable "esm_chart_version" {
   description = "ESM Chart version"
   type        = string
-  default     = "0.2.2"
+  default     = "0.2.3"
 }
 
 variable "esm_replica" {
