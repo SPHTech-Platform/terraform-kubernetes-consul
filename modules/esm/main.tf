@@ -39,8 +39,12 @@ locals {
 
     node_reconnect_timeout = var.esm_node_reconnect_timeout
     node_probe_interval    = var.esm_node_probe_interval
-    http_addr              = var.esm_http_addr
-    ping_type              = var.esm_ping_type
+
+    token      = jsonencode(var.esm_token)
+    http_addr  = var.esm_http_addr
+    datacenter = var.esm_datacenter
+
+    ping_type = var.esm_ping_type
 
     use_node_agent  = var.esm_use_node_agent
     node_agent_port = coalesce(var.esm_node_agent_port, var.tls_enabled ? 8501 : 8500)

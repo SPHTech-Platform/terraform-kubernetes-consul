@@ -34,9 +34,10 @@ No modules.
 | <a name="input_consul_template_image"></a> [consul\_template\_image](#input\_consul\_template\_image) | Image for Consul Template | `string` | `"hashicorp/consul-template:0.26.0"` | no |
 | <a name="input_esm_affinity"></a> [esm\_affinity](#input\_esm\_affinity) | Affinity for ESM | `any` | `{}` | no |
 | <a name="input_esm_chart_name"></a> [esm\_chart\_name](#input\_esm\_chart\_name) | Name of the ESM Chart name | `string` | `"consul-esm"` | no |
-| <a name="input_esm_chart_repository"></a> [esm\_chart\_repository](#input\_esm\_chart\_repository) | ESM Chart repository | `string` | `"https://basisai.github.io/charts/"` | no |
-| <a name="input_esm_chart_version"></a> [esm\_chart\_version](#input\_esm\_chart\_version) | ESM Chart version | `string` | `"0.3.1"` | no |
+| <a name="input_esm_chart_repository"></a> [esm\_chart\_repository](#input\_esm\_chart\_repository) | ESM Chart repository | `string` | `"https://sphtech-platform.github.io/charts/"` | no |
+| <a name="input_esm_chart_version"></a> [esm\_chart\_version](#input\_esm\_chart\_version) | ESM Chart version | `string` | `"0.2.0"` | no |
 | <a name="input_esm_container_security_context"></a> [esm\_container\_security\_context](#input\_esm\_container\_security\_context) | securityContext for ESM containers | `any` | `{}` | no |
+| <a name="input_esm_datacenter"></a> [esm\_datacenter](#input\_esm\_datacenter) | Consul Datacenter | `string` | `"dc1"` | no |
 | <a name="input_esm_env"></a> [esm\_env](#input\_esm\_env) | Environment variables for Consul ESM | `any` | `[]` | no |
 | <a name="input_esm_external_node_meta"></a> [esm\_external\_node\_meta](#input\_esm\_external\_node\_meta) | The node metadata values used for the ESM to qualify a node in the catalog as an "external node". | `map(string)` | <pre>{<br>  "external-node": "true"<br>}</pre> | no |
 | <a name="input_esm_http_addr"></a> [esm\_http\_addr](#input\_esm\_http\_addr) | HTTP address of the local Consul agent | `string` | `""` | no |
@@ -57,7 +58,8 @@ No modules.
 | <a name="input_esm_server_port"></a> [esm\_server\_port](#input\_esm\_server\_port) | Override Consul Server port for TLS when using Auto Encrypt | `number` | `null` | no |
 | <a name="input_esm_service_name"></a> [esm\_service\_name](#input\_esm\_service\_name) | ESM service name in Consul | `string` | `"consul-esm"` | no |
 | <a name="input_esm_service_tag"></a> [esm\_service\_tag](#input\_esm\_service\_tag) | Service tag for ESM | `string` | `""` | no |
-| <a name="input_esm_tag"></a> [esm\_tag](#input\_esm\_tag) | Docker Image tag for ESM | `string` | `"0.6.0"` | no |
+| <a name="input_esm_tag"></a> [esm\_tag](#input\_esm\_tag) | Docker Image tag for ESM | `string` | `"0.7.1"` | no |
+| <a name="input_esm_token"></a> [esm\_token](#input\_esm\_token) | Use an existing bootstrap token | <pre>object({<br>    secret_name = string<br>    secret_key  = string<br>  })</pre> | <pre>{<br>  "secret_key": null,<br>  "secret_name": null<br>}</pre> | no |
 | <a name="input_esm_tolerations"></a> [esm\_tolerations](#input\_esm\_tolerations) | Toleration for ESM | `any` | `[]` | no |
 | <a name="input_esm_use_node_agent"></a> [esm\_use\_node\_agent](#input\_esm\_use\_node\_agent) | Use Consul agent Daemonset | `bool` | `true` | no |
 | <a name="input_max_history"></a> [max\_history](#input\_max\_history) | Max History for Helm | `number` | `20` | no |
