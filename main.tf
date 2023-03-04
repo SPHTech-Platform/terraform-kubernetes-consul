@@ -31,12 +31,14 @@ locals {
     pod_security_policy_enable = var.pod_security_policy_enable
     log_json_enable            = var.log_json_enable
 
-    datacenter = var.server_datacenter
+    global_enabled = var.global_enabled
+    datacenter     = var.server_datacenter
 
     gossip_secret = var.gossip_encryption_key != null ? kubernetes_secret.secrets.metadata[0].name : "null"
     gossip_key    = var.gossip_encryption_key != null ? "gossip" : "null"
 
     consul_domain         = var.consul_domain
+    server_enabled        = var.server_enabled
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
     server_storage_class  = var.server_storage_class
@@ -65,7 +67,14 @@ locals {
       secretKey  = var.replication_token.secret_key
     })
 
+    external_servers_enabled             = var.external_servers_enabled
+    external_servers_hosts               = jsonencode(var.external_servers_hosts)
+    external_servers_https_port          = var.external_servers_https_port
+    external_servers_use_system_roots    = var.external_servers_use_system_roots
+    external_servers_k8s_authmethod_host = var.external_servers_k8s_authmethod_host
+
     client_enabled        = jsonencode(var.client_enabled)
+    client_join           = jsonencode(var.client_join)
     client_grpc           = var.client_grpc
     client_resources      = yamlencode(var.client_resources)
     client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
@@ -93,6 +102,8 @@ locals {
     tls_cakey_secret_name  = var.tls_ca != null ? kubernetes_secret.secrets.metadata[0].name : "null"
     tls_cakey_secret_key   = var.tls_ca != null ? "cakey" : "null"
     tls_server_cert_secret = var.tls_server_cert_secret != null ? var.tls_server_cert_secret : "null"
+
+    enable_consul_namespaces = var.enable_consul_namespaces
 
     enable_sync_catalog           = jsonencode(var.enable_sync_catalog)
     sync_by_default               = var.sync_by_default
@@ -165,7 +176,14 @@ locals {
     transparent_proxy_default_enabled          = var.transparent_proxy_default_enabled
     transparent_proxy_default_overwrite_probes = var.transparent_proxy_default_overwrite_probes
 
-    terminating_gateway_enable   = var.terminating_gateway_enable
+    mesh_gateway_enabled  = var.mesh_gateway_enabled
+    mesh_gateway_replicas = var.mesh_gateway_replicas
+
+    ingress_gateway_enabled  = var.ingress_gateway_enabled
+    ingress_gateway_replicas = var.ingress_gateway_replicas
+    ingress_gateways         = yamlencode(var.ingress_gateways)
+
+    terminating_gateway_enabled  = var.terminating_gateway_enabled
     terminating_gateway_defaults = yamlencode(var.terminating_gateway_defaults)
     terminating_gateways         = yamlencode(var.terminating_gateways)
 

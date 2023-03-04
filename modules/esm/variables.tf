@@ -64,13 +64,13 @@ variable "esm_chart_name" {
 variable "esm_chart_repository" {
   description = "ESM Chart repository"
   type        = string
-  default     = "https://basisai.github.io/charts/"
+  default     = "https://sphtech-platform.github.io/charts/"
 }
 
 variable "esm_chart_version" {
   description = "ESM Chart version"
   type        = string
-  default     = "0.3.1"
+  default     = "0.2.4"
 }
 
 variable "esm_replica" {
@@ -88,7 +88,7 @@ variable "esm_image" {
 variable "esm_tag" {
   description = "Docker Image tag for ESM"
   type        = string
-  default     = "0.6.0"
+  default     = "0.7.1"
 }
 
 variable "esm_resources" {
@@ -184,6 +184,24 @@ variable "esm_http_addr" {
   default     = ""
 }
 
+variable "esm_token" {
+  description = "Use an existing bootstrap token"
+  type = object({
+    secret_name = string
+    secret_key  = string
+  })
+  default = {
+    secret_name = null
+    secret_key  = null
+  }
+}
+
+variable "esm_datacenter" {
+  description = "Consul Datacenter"
+  type        = string
+  default     = "dc1"
+}
+
 variable "esm_ping_type" {
   description = "The method to use for pinging external nodes."
   type        = string
@@ -205,7 +223,7 @@ variable "esm_init_container_set_sysctl" {
 variable "esm_use_node_agent" {
   description = "Use Consul agent Daemonset"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "esm_node_agent_port" {

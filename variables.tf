@@ -40,6 +40,12 @@ variable "chart_timeout" {
   default     = 1800
 }
 
+variable "global_enabled" {
+  description = "Deploy consul services"
+  type        = bool
+  default     = true
+}
+
 variable "name" {
   description = "Sets the prefix used for all resources in the helm chart. If not set, the prefix will be \"<helm release name>-consul\"."
   type        = string
@@ -67,13 +73,13 @@ variable "max_history" {
 variable "consul_image_name" {
   description = "Docker Image of Consul to run"
   type        = string
-  default     = "consul"
+  default     = "hashicorp/consul"
 }
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
   type        = string
-  default     = "1.11.1"
+  default     = "1.14.2"
 }
 
 variable "consul_k8s_image" {
@@ -85,7 +91,7 @@ variable "consul_k8s_image" {
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
   type        = string
-  default     = "0.36.0"
+  default     = "1.0.2"
 }
 
 variable "image_envoy" {
@@ -106,6 +112,12 @@ variable "pod_security_policy_enable" {
   default     = true
 }
 
+variable "server_enabled" {
+  description = " If true, the chart will install all the resources necessary for a Consul server cluster. default is global.enabled"
+  type        = string
+  default     = "-"
+}
+
 variable "server_replicas" {
   description = "Number of server replicas to run"
   type        = number
@@ -115,6 +127,7 @@ variable "server_replicas" {
 variable "server_datacenter" {
   description = "Datacenter to configure Consul as."
   type        = string
+  default     = "dc1"
 }
 
 variable "server_storage" {
@@ -202,12 +215,6 @@ variable "server_topology_spread_constraints" {
   default     = ""
 }
 
-variable "client_affinity" {
-  description = "affinity Settings for Client pods, formatted as a multi-line YAML string."
-  type        = string
-  default     = null
-}
-
 variable "server_priority_class" {
   description = "Priority class for servers"
   type        = string
@@ -226,10 +233,46 @@ variable "server_service_account_annotations" {
   default     = ""
 }
 
+variable "external_servers_enabled" {
+  description = "Talk to external servers, If setting this to true, you must also set `server.enabled` to false."
+  type        = bool
+  default     = false
+}
+
+variable "external_servers_hosts" {
+  description = "An array of external Consul server hosts"
+  type        = list(string)
+  default     = []
+}
+
+variable "external_servers_https_port" {
+  description = "The HTTPS port of the Consul servers"
+  type        = number
+  default     = 8501
+}
+
+variable "external_servers_use_system_roots" {
+  description = "If true, consul-k8s-control-plane components will ignore the CA set in global.tls.caCert"
+  type        = bool
+  default     = false
+}
+
+variable "external_servers_k8s_authmethod_host" {
+  description = "If you are setting global.acls.manageSystemACLs and connectInject.enabled to true, set k8sAuthMethodHost to the address of the Kubernetes API server. This address must be reachable from the Consul servers."
+  type        = string
+  default     = null
+}
+
 variable "client_enabled" {
   description = "Enable running Consul client agents on every Kubernetes node"
   type        = string
   default     = "-"
+}
+
+variable "client_join" {
+  description = "Cluster addresses for clients to join"
+  type        = list(string)
+  default     = null
 }
 
 variable "client_grpc" {
@@ -275,6 +318,12 @@ variable "client_extra_volumes" {
   description = "List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys"
   type        = list(any)
   default     = []
+}
+
+variable "client_affinity" {
+  description = "affinity Settings for Client pods, formatted as a multi-line YAML string."
+  type        = string
+  default     = null
 }
 
 variable "client_tolerations" {
@@ -817,10 +866,53 @@ variable "controller_acl_token" {
   }
 }
 
-###########################
+##############################
+# Consul Connect Mesh Gateway
+##############################
+variable "mesh_gateway_enabled" {
+  description = "If mesh gateways are enabled, a Deployment will be created that runs gateways and Consul Connect will be configured to use gateways. "
+  type        = bool
+  default     = false
+}
+
+variable "mesh_gateway_replicas" {
+  description = "Number of replicas for the Deployment."
+  type        = number
+  default     = 2
+}
+##############################
+# Ingress Gateway
+##############################
+variable "ingress_gateway_enabled" {
+  description = "Deploy Ingress Gateways"
+  type        = bool
+  default     = false
+}
+
+variable "ingress_gateway_replicas" {
+  description = " Number of replicas for each ingress gateway defined."
+  type        = string
+  default     = 2
+}
+
+variable "ingress_gateways" {
+  description = <<-EOF
+      Gateways is a list of gateway objects. 
+      The only required field for each is name, though they can also contain any of the fields in defaults.
+      Values defined here override the defaults except in the case of annotations where both will be applied.
+    EOF
+  type        = list(map(string))
+  default = [
+    {
+      name = "ingress-gateway"
+    }
+  ]
+}
+
+#####################################
 # Consul Connect Terminating Gateway
-###########################
-variable "terminating_gateway_enable" {
+#####################################
+variable "terminating_gateway_enabled" {
   description = "Deploy Terminating Gateways"
   type        = bool
   default     = false
@@ -1020,6 +1112,12 @@ variable "tls_server_cert_secret" {
   description = "A Kubernetes secret containing a certificate & key for the server agents to use for TLS communication within the Consul cluster. Additional SANs are required."
   type        = string
   default     = null
+}
+
+variable "enable_consul_namespaces" {
+  description = "Make use of configuration beyond registering everything into the default Consul namespace. Consul ENT v1.7+"
+  type        = bool
+  default     = false
 }
 
 ###########################
